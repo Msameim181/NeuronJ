@@ -2,6 +2,8 @@
 
 This is an implementation of NeuronJ work with python. NeuronJ is a plug-in for ImageJ that allows you to create and edit neurons masks.
 
+- ImageJ: https://imagej.nih.gov/ij/
+- NeuronJ: https://imagescience.org/meijering/software/neuronj/
 ----
 ## Why We Made It
 
@@ -9,7 +11,7 @@ Since we are not a neuroscientist, we wanted to make a tool that would be useful
 
 You may say ImageJ can be fast with scripts, But it isn't. It will not help you to do everything. So due to the lack of time, we made this.
 
-## Usage
+## How to use
 ### Step 1: prepare the data
 For this step, your Raw data folder should contain the following files:
 
@@ -63,3 +65,13 @@ NeuronJ(data_addr:str,
 - Perfect documentation. Easy to undrestand. Easy to use.
 - Quickly and good performance.
 - Functional with good representation.
+
+
+## Support
+Please feel free to contact us if you have any questions. If you have any problem or idea, please leave us an issue on [Github](https://github.com/Msameim181/NeuronJ/issues).
+
+If you enjoyed it, I appreciate it if you bless us with your star. Thank you for your support.
+
+
+## To Do
+- Add some samples for represent the work.
