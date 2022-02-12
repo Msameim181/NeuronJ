@@ -41,8 +41,8 @@ The folling folders will be created:
 
 ### Step 3: Run the script
 You just need to replace the path of your Raw data folder and the output folder in the script. Our default path is:
-- Raw data folder: "./data/dataFiles/RawData/"
-- Output folder: "./data/dataset/"
+- Raw data folder: "./data/rawData/"
+- Output folder: "./data/dataSet/"
 
 ```
 NeuronJ(data_addr:str, 
