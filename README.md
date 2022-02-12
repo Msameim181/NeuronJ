@@ -74,4 +74,4 @@ If you enjoyed it, I appreciate it if you bless us with your star. Thank you for
 
 
 ## To Do
-- Add some samples for represent the work.
+- Add some samples (.ndf files, images and masks) for represent the work.
