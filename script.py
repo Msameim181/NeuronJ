@@ -5,7 +5,7 @@ from src.neuronj import NeuronJ
 
 def main():
     NeuronJ(
-        data_addr = "./data/rawData/X_DIV5",
+        data_addr = "./data/rawData/Z_DIV5",
         output_dir = "./data/dataSet/",
         colorize = True
     )

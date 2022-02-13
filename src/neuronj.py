@@ -14,8 +14,7 @@ def NeuronJ(data_addr:str,
             mask_dir_name:str = 'masks', 
             image_ext:str = '.tif', 
             mask_ext:str = '.tif',
-            colorize:bool = True,
-            show_result:bool = False):
+            colorize:bool = True):
 
     """NeuronJ data pre-processing.
 
@@ -27,7 +26,6 @@ def NeuronJ(data_addr:str,
         image_ext (str): Extension of image file.
         mask_ext (str): Extension of mask file.
         colorize (bool): If True, colorize the image.
-        show_result (bool): If True, show the result.
 
     Returns:
         None
@@ -49,7 +47,7 @@ def NeuronJ(data_addr:str,
         trace_sections = Trace_finder(lines)
         trace_data = Trace_data_extractor(trace_sections, neuron_colorType)
         Save_result(image_addr, trace_data, file_name, output_addresses, 
-                    image_ext, mask_ext, colorize, show_result)
+                    image_ext, mask_ext, colorize)
 
         file_name += 1
 
@@ -274,8 +272,7 @@ def Save_result(image_addr:str,
                 output_addresses:list, 
                 image_ext:str = '.tif', 
                 mask_ext:str = '.tif',
-                colorize:bool = True,
-                show_result:bool = False):
+                colorize:bool = True):
     
     """Save result into output folder.
 
@@ -287,7 +284,6 @@ def Save_result(image_addr:str,
         image_ext (str): Image extension.
         mask_ext (str): Mask extension.
         colorize (bool): If True, colorize the image.
-        show_result (bool): If True, show the result.
     
     Returns:
         None
@@ -304,7 +300,6 @@ def Save_result(image_addr:str,
     image_size = (img.shape[0], img.shape[1])
     black_backgorund = np.zeros(image_size, dtype=np.uint8)
     plt.figure(figsize = (5, 5), dpi = 300)
-
     for trace in trace_data:
         if colorize:
             trace_color = trace['color']
@@ -321,8 +316,8 @@ def Save_result(image_addr:str,
     mask_file_name = file_name_fixer(file_name, mask_ext)
     mask_save_addr = Path(mask_output_addr, mask_file_name)
     plt.savefig(mask_save_addr, dpi = 330.33, bbox_inches='tight', pad_inches = 0)
-    if not show_result:
-        plt.close()
+    plt.close()
+
 
     # Create show image
     plt.figure(figsize = (5, 5), dpi = 150)
@@ -342,6 +337,6 @@ def Save_result(image_addr:str,
     show_file_name = file_name_fixer(file_name, '.tif')
     show_save_addr = Path(show_output_addr, show_file_name)
     plt.savefig(show_save_addr, dpi = 330.33, bbox_inches='tight', pad_inches = 0)
-    if not show_result:
-        plt.close()
+    plt.close()
+    plt.rcParams.update({'figure.max_open_warning': 100})
 
