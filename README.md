@@ -51,8 +51,7 @@ NeuronJ(data_addr:str,
         mask_dir_name:str = 'masks', 
         image_ext:str = '.tif', 
         mask_ext:str = '.tif',
-        colorize:bool = True,
-        show_result:bool = False)
+        colorize:bool = True)
 ```
 
 
