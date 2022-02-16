@@ -34,7 +34,17 @@ def NeuronJ(data_addr:str,
         save_data_dpi (int): DPI of saved data. Default: 300.
         resize_mask_to_image_size (bool): If True, resize mask to image size.
         resize_lib (str): Library used for resizing. Default: pillow. [pillow, opencv].
-        mask_builder (str): Library used for mask building. Default: matplotlib. [matplotlib, pillow, opencv].
+        mask_builder (str): Library used for mask building. Default: matplotlib. [matplotlib, pillow, opencv]. 
+
+        ** Note: matplotlib is recommended for quality. Pillow and opencv are faster but not recommended. Pillow has no image_mask output. OpenCV not support colorize.
+        Quality: matplotlib > pillow > opencv
+        Speed: pillow > opencv > matplotlib
+        Output File size (image_masks: presentaion output): matplotlib > opencv
+        Output File size (masks): matplotlib (no resizeing) > matplotlib (pillow resizing) > pillow > matplotlib (opencv resizing) > opencv
+        Compression: matplotlib (pillow resizing) and pillow no compression. matplotlib (opencv resizing) and opencv have LZW compression.
+        DPI: Can be modified in just in matplotlib with no resize and compression. With resize or other methods, DPI is 96. 
+
+        ** Note: If you used pillow or opencv as mask_builder, there is no need to resize mask to image size. 
 
     Returns:
         None
@@ -403,7 +413,6 @@ def pillow_mask_builder(image_addr:str,
 
     """
 
-
     # Create mask
     img = Image.open(image_addr)
     image_size = img.size
@@ -411,9 +420,9 @@ def pillow_mask_builder(image_addr:str,
     drawline = ImageDraw.Draw(black_backgorund)
     for trace in trace_data:
         if colorize:
-            trace_color = trace['color']['name']
+            trace_color = trace['color']['hex']
         else:
-            trace_color = (255, 255, 255)
+            trace_color = 'white'
         for segment in trace['segment_data']:
             drawline.line(segment, fill=trace_color, width=0)
     # black_backgorund.show()
@@ -424,22 +433,88 @@ def pillow_mask_builder(image_addr:str,
     black_backgorund.save(mask_save_addr)
     black_backgorund.close()
 
+
     # Create show image
-    drawline = ImageDraw.Draw(img)
+    # drawline = ImageDraw.Draw(img)
+    # for trace in trace_data:
+    #     if colorize:
+    #         trace_color = trace['color']['hex']
+    #     else:
+    #         trace_color = 'white'
+    #     for segment in trace['segment_data']:
+    #         drawline.line(segment, fill=trace_color, width=0)
+    # # img.show()
+
+    # # Save Show image
+    # show_file_name = file_name_fixer(file_name, '.tif')
+    # show_save_addr = Path(show_output_addr, show_file_name)
+    # img.save(show_save_addr)
+    # img.close()
+    ...
+
+def opencv_mask_builder(image_addr:str,  
+                        trace_data:list, 
+                        file_name:int, 
+                        mask_output_addr:str, 
+                        show_output_addr:str,
+                        mask_ext:str = '.tif',
+                        colorize:bool = True):
+    """Build mask for each trace.
+
+    Args:
+        image_addr (str): Address of image.
+        trace_data (list): Trace data.
+        file_name (int): File name.
+        mask_output_addr (str): Address of mask output folder.
+        show_output_addr (str): Address of show output folder.
+        mask_ext (str): Extension of mask.
+        colorize (bool): Colorize mask.
+
+    Returns:
+        None
+
+    """
+
+    # Create mask
+
+    img = cv2.imread(image_addr)
+    image_size = (img.shape[0], img.shape[1])
+    black_backgorund = np.zeros(image_size, dtype=np.uint8)
     for trace in trace_data:
         if colorize:
-            trace_color = trace['color']['name']
+            trace_color = trace['color']['rgb']
         else:
             trace_color = (255, 255, 255)
         for segment in trace['segment_data']:
-            drawline.line(segment, fill=trace_color, width=0)
-    # img.show()
+            for i in range(len(segment)):
+                if i < len(segment)-1:
+                    cv2.line(black_backgorund, segment[i], segment[i+1], trace_color, thickness=1)
+    # cv2.imshow(f"{file_name}", black_backgorund)
+    # cv2.waitKey()
+   
+    # Save mask
+    mask_file_name = file_name_fixer(file_name, mask_ext)
+    mask_save_addr = Path(mask_output_addr, mask_file_name)
+    cv2.imwrite(str(mask_save_addr), black_backgorund)
+
+
+    # Create show image
+    for trace in trace_data:
+        if colorize:
+            trace_color = trace['color']['rgb']
+        else:
+            trace_color = (255, 255, 255)
+        for segment in trace['segment_data']:
+            for i in range(len(segment)):
+                if i < len(segment)-1:
+                    cv2.line(img, segment[i], segment[i+1], trace_color, thickness=1)
+    # cv2.imshow(f"{file_name}", img)
+    # cv2.waitKey()
 
     # Save Show image
     show_file_name = file_name_fixer(file_name, '.tif')
     show_save_addr = Path(show_output_addr, show_file_name)
-    img.save(show_save_addr)
-    img.close()
+    cv2.imwrite(str(show_save_addr), img)
 
 def Save_result(image_addr:str,
                 trace_data:list, 
@@ -486,9 +561,13 @@ def Save_result(image_addr:str,
                                 mask_ext, colorize, save_data_dpi, 
                                 resize_mask_to_image_size, resize_lib)
 
-    # elif mask_builder == 'pillow':
-    #     pillow_mask_builder(image_addr, trace_data, file_name, 
-    #                         mask_output_addr, show_output_addr, 
-    #                         mask_ext, colorize)
+    elif mask_builder == 'pillow':
+        pillow_mask_builder(image_addr, trace_data, file_name, 
+                            mask_output_addr, show_output_addr, 
+                            mask_ext, colorize)
 
-    ...
+    elif mask_builder == 'opencv':
+        opencv_mask_builder(image_addr, trace_data, file_name, 
+                            mask_output_addr, show_output_addr, 
+                            mask_ext, colorize)
+

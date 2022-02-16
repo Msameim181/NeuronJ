@@ -10,7 +10,8 @@ def main():
         colorize = True,
         mask_builder='matplotlib',
         resize_mask_to_image_size = True,
-        resize_lib='opencv'
+        resize_lib='pillow',
+        save_data_dpi=400
     )
 
 
