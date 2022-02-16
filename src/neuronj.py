@@ -6,8 +6,30 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image, ImageDraw
-from rich.progress import track
+from rich.progress import (
+    Progress,
+    BarColumn,
+    TextColumn,
+    TimeElapsedColumn,
+    TimeRemainingColumn,
+    TransferSpeedColumn,
+    SpinnerColumn,
+)
 
+progress = Progress(
+    SpinnerColumn(finished_text="[bold blue]:heavy_check_mark:", style='blue'),
+    TextColumn("[bold blue]{task.description}", justify="right"),
+    BarColumn(bar_width=50),
+    "[progress.percentage]{task.percentage:>3.1f}%",
+    "•",
+    TimeRemainingColumn(),
+    "•",
+    TimeElapsedColumn(),
+    "•",
+    "[progress.filesize]Passed: {task.completed} item",
+    "•",
+    "[progress.filesize.total]Total: {task.total} item",
+)
 
 def NeuronJ(data_addr:str, 
             output_dir:str,
@@ -60,17 +82,17 @@ def NeuronJ(data_addr:str,
     ndfs_addr, images_addr = Data_finder(data_addr)
 
     file_name, output_addresses = Output_checker(output_dir, image_dir_name, mask_dir_name)
-    
-    for ndf_addr, image_addr in track(zip(ndfs_addr, images_addr), total=len(ndfs_addr), 
-                                                description='Working on data...'):
-        lines, img = Data_loader(ndf_addr, image_addr)
-        trace_sections = Trace_finder(lines)
-        trace_data = Trace_data_extractor(trace_sections, neuron_colorType)
-        Save_result(image_addr, trace_data, file_name, output_addresses, 
-                    image_ext, mask_ext, colorize, save_data_dpi,
-                    resize_mask_to_image_size, resize_lib, mask_builder)
+    with progress:
+        for ndf_addr, image_addr in progress.track(zip(ndfs_addr, images_addr), total=len(ndfs_addr), 
+                                                    description='Working on data...'):
+            lines, img = Data_loader(ndf_addr, image_addr)
+            trace_sections = Trace_finder(lines)
+            trace_data = Trace_data_extractor(trace_sections, neuron_colorType)
+            Save_result(image_addr, trace_data, file_name, output_addresses, 
+                        image_ext, mask_ext, colorize, save_data_dpi,
+                        resize_mask_to_image_size, resize_lib, mask_builder)
 
-        file_name += 1
+            file_name += 1
 
 def Data_finder(data_addr:str):
     """Loads data from a given address. '.ndf' & '.tif' files are expected to be in the folder.
