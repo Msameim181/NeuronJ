@@ -12,7 +12,6 @@ from rich.progress import (
     TextColumn,
     TimeElapsedColumn,
     TimeRemainingColumn,
-    TransferSpeedColumn,
     SpinnerColumn,
 )
 
@@ -455,7 +454,7 @@ def pillow_mask_builder(image_addr:str,
     black_backgorund.save(mask_save_addr)
     black_backgorund.close()
 
-
+    # ------------------ Need Review ------------------
     # Create show image
     # drawline = ImageDraw.Draw(img)
     # for trace in trace_data:
@@ -472,6 +471,7 @@ def pillow_mask_builder(image_addr:str,
     # show_save_addr = Path(show_output_addr, show_file_name)
     # img.save(show_save_addr)
     # img.close()
+    # ------------------ Need Review ------------------
     ...
 
 def opencv_mask_builder(image_addr:str,  
@@ -572,7 +572,6 @@ def Save_result(image_addr:str,
     output_addr, image_output_addr, mask_output_addr, show_output_addr, temp_addr = output_addresses
     
     # Copy original image
-    # destination_addr = shutil.copy(image_addr, image_output_addr)
     destination_addr = shutil.copy(image_addr, temp_addr)
     os.rename(destination_addr, Path(image_output_addr, img_file_name))
 
