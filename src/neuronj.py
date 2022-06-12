@@ -71,12 +71,12 @@ def NeuronJ(data_addr:str,
         None
     """
     neuron_colorType = {
-        '0': {'hex': '#adadad',  'label': 'Secondary',        'name': 'grey'    , 'rgb': (173, 173, 173)},
-        '1': {'hex': '#d52c2c',  'label': 'Axon',             'name': 'red'     , 'rgb': (213, 44, 44)},
-        '2': {'hex': '#1985bf',  'label': 'Dendrite',         'name': 'blue'    , 'rgb': (25, 133, 191)},
-        '3': {'hex': '#d3d022',  'label': 'Primary',          'name': 'yellow'  , 'rgb': (211, 208, 34)},
-        '4': {'hex': '#adadad',  'label': 'Secondary',        'name': 'grey'    , 'rgb': (173, 173, 173)},
-        '6': {'hex': '#25a214',  'label': 'Dendrite_primary', 'name': 'green'   , 'rgb': (37, 162, 20)},
+        '0': {'hex': '#adadad', 'label': 'Secondary',        'name': 'grey'  , 'rgb': (173, 173, 173)},
+        '1': {'hex': '#d52c2c', 'label': 'Axon',             'name': 'red'   , 'rgb': (213, 44, 44)},
+        '2': {'hex': '#1985bf', 'label': 'Dendrite',         'name': 'blue'  , 'rgb': (25, 133, 191)},
+        '3': {'hex': '#d3d022', 'label': 'Primary',          'name': 'yellow', 'rgb': (211, 208, 34)},
+        '4': {'hex': '#adadad', 'label': 'Secondary',        'name': 'grey'  , 'rgb': (173, 173, 173)},
+        '6': {'hex': '#25a214', 'label': 'Dendrite_primary', 'name': 'green' , 'rgb': (37, 162, 20)},
     }
     ndfs_addr, images_addr = Data_finder(data_addr)
 
