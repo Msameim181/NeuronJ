@@ -5,6 +5,15 @@ This is an implementation of NeuronJ work with python. NeuronJ is a plug-in for 
 - ImageJ: https://imagej.nih.gov/ij/
 - NeuronJ: https://imagescience.org/meijering/software/neuronj/
 ----
+
+<p  align="center"> 
+     <a href="https://www.codefactor.io/repository/github/msameim181/neuronj">
+          <img src="https://www.codefactor.io/repository/github/msameim181/neuronj/badge"> 
+     </a>
+     <a href="https://www.python.org/dev/peps/pep-0008/">
+          <img src="http://img.shields.io/badge/codestyle-PEP--8-informational"> 
+     </a>
+
 ## Why We Made It
 
 Since we are not a neuroscientist, we wanted to make a tool that would be useful for our research, would be easy to use, and would be easy to modify. But the main reason we made it was if you want to process a lot of data and you want to create a mask for each image and save them, it could take a lot of your time with NeuronJ and ImageJ.
